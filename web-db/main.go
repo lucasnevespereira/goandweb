@@ -48,6 +48,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	fmt.Println("Ping to db successful!")
+
+	// Create table from schema
 	stmt, err := db.Prepare(schema)
 	if err != nil {
 		log.Fatal(err)
@@ -55,7 +58,6 @@ func main() {
 
 	stmt.Exec()
 
-	fmt.Println("Ping to db successful!")
 
 	// Insert Document
 	//var insertSchema = `INSERT INTO "public"."books"("title", "author", "page_count") VALUES('Harry Potter', 'JK Rowling', 768);`
