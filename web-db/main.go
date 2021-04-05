@@ -17,7 +17,7 @@ const (
 )
 
 var schema = `
- CREATE TABLE IF NOT EXISTS book
+CREATE TABLE IF NOT EXISTS books
 (
 	id SERIAL PRIMARY KEY,
 	title TEXT,
@@ -27,11 +27,10 @@ var schema = `
 `
 
 func main() {
-	pg_con_string := fmt.Sprintf("port=%d host=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		hostPort, hostname, username, password, databaseName)
+	pgConString := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+		username, password, hostname, hostPort, databaseName)
 
-	db, err := sql.Open("postgres", pg_con_string)
+	db, err := sql.Open("postgres", pgConString)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,4 +49,5 @@ func main() {
 	stmt.Exec()
 
 	fmt.Println("Ping to db successful!")
+
 }
