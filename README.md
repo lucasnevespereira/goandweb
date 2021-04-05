@@ -6,4 +6,4 @@ Go support for web development topics.
 
 - [http](web-http)
 - [json](web-json)
-- [database]()
+- [database](web-db)
