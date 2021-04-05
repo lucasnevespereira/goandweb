@@ -26,9 +26,12 @@ CREATE TABLE IF NOT EXISTS books
 )
 `
 
-var insertSchema = `
-INSERT INTO "public"."books"("title", "author", "page_count") VALUES('Harry Potter', 'JK Rowling', 768);
-`
+type Book struct {
+	Id int
+	Title string
+	Author string
+	pageCount int
+}
 
 func main() {
 	pgConString := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
@@ -45,22 +48,40 @@ func main() {
 		log.Fatal(err)
 	}
 
-	stmt, err := db.Prepare(schema)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	stmt.Exec()
+	//stmt, err := db.Prepare(schema)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//stmt.Exec()
 
 	fmt.Println("Ping to db successful!")
 
-	insertStmt, err := db.Prepare(insertSchema)
-	if err != nil {
-		log.Fatal(err)
+	// Insert Document
+	//var insertSchema = `INSERT INTO "public"."books"("title", "author", "page_count") VALUES('Harry Potter', 'JK Rowling', 768);`
+	//insertStmt, err := db.Prepare(insertSchema)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//insertStmt.Exec()
+	//fmt.Println("Inserted document")
+
+	// map to values
+	//var id int
+	//var title string
+	//var author string
+	//var pageCount int
+	//rows, _ := db.Query("SELECT * from books")
+	//for rows.Next() {
+	//	rows.Scan(&id, &title,&author,&pageCount)
+	//	fmt.Printf("id=%v, title=%v, author=%v, pageCount=%v \n", id,title,author,pageCount)
+	//}
+
+	// map to struct
+	rows, _ := db.Query("SELECT * FROM books")
+	b := Book{}
+	for rows.Next() {
+		rows.Scan(&b.Id,&b.Title,&b.Author,&b.pageCount)
+		fmt.Printf("book=%v \n", b)
 	}
-
-	insertStmt.Exec()
-
-	fmt.Println("Inserted document")
-
 }
