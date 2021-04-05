@@ -16,8 +16,17 @@ const (
 	databaseName = "test"
 )
 
-func main() {
+var schema = `
+ CREATE TABLE IF NOT EXISTS book
+(
+	id SERIAL PRIMARY KEY,
+	title TEXT,
+	author TEXT,
+	page_count INT
+)
+`
 
+func main() {
 	pg_con_string := fmt.Sprintf("port=%d host=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		hostPort, hostname, username, password, databaseName)
@@ -32,6 +41,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	stmt, err := db.Prepare(schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stmt.Exec()
 
 	fmt.Println("Ping to db successful!")
 }
