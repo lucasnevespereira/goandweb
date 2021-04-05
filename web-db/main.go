@@ -48,12 +48,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//stmt, err := db.Prepare(schema)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//
-	//stmt.Exec()
+	stmt, err := db.Prepare(schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stmt.Exec()
 
 	fmt.Println("Ping to db successful!")
 
@@ -65,6 +65,15 @@ func main() {
 	//}
 	//insertStmt.Exec()
 	//fmt.Println("Inserted document")
+
+
+	// Insert with Prepared Statement
+	//myBook := Book{Title: "Deep Work", Author: "Cal Newport", pageCount: 308,}
+	//insertStatement, _ := db.Prepare("INSERT INTO books (title, author, page_count) VALUES (?,?,?)")
+	//_, err = insertStatement.Exec(myBook.Title, myBook.Author, myBook.pageCount)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
 	// map to values
 	//var id int
@@ -84,4 +93,5 @@ func main() {
 		rows.Scan(&b.Id,&b.Title,&b.Author,&b.pageCount)
 		fmt.Printf("book=%v \n", b)
 	}
+
 }
