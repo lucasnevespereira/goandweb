@@ -26,6 +26,10 @@ CREATE TABLE IF NOT EXISTS books
 )
 `
 
+var insertSchema = `
+INSERT INTO "public"."books"("title", "author", "page_count") VALUES('Harry Potter', 'JK Rowling', 768);
+`
+
 func main() {
 	pgConString := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
 		username, password, hostname, hostPort, databaseName)
@@ -49,5 +53,14 @@ func main() {
 	stmt.Exec()
 
 	fmt.Println("Ping to db successful!")
+
+	insertStmt, err := db.Prepare(insertSchema)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	insertStmt.Exec()
+
+	fmt.Println("Inserted document")
 
 }
